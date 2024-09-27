@@ -9,6 +9,11 @@ function generatePermutations() {
         return;
     }
 
+    if (input.length > 7) {
+        alert("يجب أن تكون الكلمة مكونة من 7 أحرف أو أقل.");
+        return;
+    }
+
     const permutations = getPermutations(input);
     const uniquePermutations = [...new Set(permutations)]; // Remove duplicates
 
@@ -20,19 +25,4 @@ function generatePermutations() {
 
     // Update the result count in the page
     resultCount.textContent = `عدد الاحتمالات: ${uniquePermutations.length}`;
-}
-
-function getPermutations(string) {
-    if (string.length <= 1) return [string];
-
-    const permutations = [];
-    for (let i = 0; i < string.length; i++) {
-        const char = string[i];
-        const remainingChars = string.slice(0, i) + string.slice(i + 1);
-        const remainingPermutations = getPermutations(remainingChars);
-        for (const perm of remainingPermutations) {
-            permutations.push(char + perm);
-        }
-    }
-    return permutations;
 }
