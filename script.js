@@ -1,17 +1,22 @@
+<script>
+    const wordInput = document.getElementById('wordInput');
+
+    // استماع لحدث الإدخال للتحقق من عدد الأحرف أثناء الكتابة
+    wordInput.addEventListener('input', function () {
+        if (wordInput.value.length > 7) {
+            alert("يجب ألا تتجاوز الكلمة 7 أحرف.");
+            wordInput.value = wordInput.value.slice(0, 7); // حذف الأحرف الزائدة
+        }
+    });
 
     function generatePermutations() {
-        const input = document.getElementById('wordInput').value;
+        const input = wordInput.value;
         const resultList = document.getElementById('resultList');
         const resultCount = document.getElementById('resultCount');
         resultList.innerHTML = ''; // Clear previous results
 
         if (input.length === 0) {
             alert("يرجى إدخال كلمة.");
-            return;
-        }
-
-        if (input.length > 7) {
-            alert("يجب ألا تتجاوز الكلمة 7 أحرف.");
             return;
         }
 
