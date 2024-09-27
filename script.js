@@ -1,53 +1,51 @@
-<script>
-    const wordInput = document.getElementById('wordInput');
+const wordInput = document.getElementById('wordInput');
 
-    // استماع لحدث الإدخال للتحقق من عدد الأحرف أثناء الكتابة
-    wordInput.addEventListener('input', function () {
-        if (wordInput.value.length > 7) {
-            alert("يجب ألا تتجاوز الكلمة 7 أحرف.");
-            wordInput.value = wordInput.value.slice(0, 7); // حذف الأحرف الزائدة
-        }
+// استماع لحدث الإدخال للتحقق من عدد الأحرف أثناء الكتابة
+wordInput.addEventListener('input', function () {
+    if (wordInput.value.length > 7) {
+        alert("يجب ألا تتجاوز الكلمة 7 أحرف.");
+        wordInput.value = wordInput.value.slice(0, 7); // حذف الأحرف الزائدة
+    }
+});
+
+function generatePermutations() {
+    const input = wordInput.value;
+    const resultList = document.getElementById('resultList');
+    const resultCount = document.getElementById('resultCount');
+    resultList.innerHTML = ''; // مسح النتائج السابقة
+
+    if (input.length === 0) {
+        alert("يرجى إدخال كلمة.");
+        return;
+    }
+
+    const permutations = getPermutations(input);
+    const uniquePermutations = [...new Set(permutations)]; // إزالة التكرارات
+
+    uniquePermutations.forEach(word => {
+        const listItem = document.createElement('li');
+        listItem.textContent = word;
+        resultList.appendChild(listItem);
     });
 
-    function generatePermutations() {
-        const input = wordInput.value;
-        const resultList = document.getElementById('resultList');
-        const resultCount = document.getElementById('resultCount');
-        resultList.innerHTML = ''; // Clear previous results
+    // تحديث عدد النتائج
+    resultCount.textContent = `عدد الاحتمالات: ${uniquePermutations.length}`;
+}
 
-        if (input.length === 0) {
-            alert("يرجى إدخال كلمة.");
-            return;
-        }
+// دالة لتوليد كل الاحتمالات
+function getPermutations(string) {
+    if (string.length <= 1) {
+        return [string];
+    }
 
-        const permutations = getPermutations(input);
-        const uniquePermutations = [...new Set(permutations)]; // Remove duplicates
-
-        uniquePermutations.forEach(word => {
-            const listItem = document.createElement('li');
-            listItem.textContent = word;
-            resultList.appendChild(listItem);
+    let permutations = [];
+    for (let i = 0; i < string.length; i++) {
+        let char = string[i];
+        let remainingChars = string.slice(0, i) + string.slice(i + 1);
+        let remainingPermutations = getPermutations(remainingChars);
+        remainingPermutations.forEach(permutation => {
+            permutations.push(char + permutation);
         });
-
-        // Update the result count in the page
-        resultCount.textContent = `عدد الاحتمالات: ${uniquePermutations.length}`;
     }
-
-    // Function to generate all permutations (assuming you have this function defined)
-    function getPermutations(string) {
-        if (string.length <= 1) {
-            return [string];
-        }
-
-        let permutations = [];
-        for (let i = 0; i < string.length; i++) {
-            let char = string[i];
-            let remainingChars = string.slice(0, i) + string.slice(i + 1);
-            let remainingPermutations = getPermutations(remainingChars);
-            remainingPermutations.forEach(permutation => {
-                permutations.push(char + permutation);
-            });
-        }
-        return permutations;
-    }
-</script>
+    return permutations;
+}
